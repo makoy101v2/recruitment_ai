@@ -32,7 +32,7 @@ const JobListings: React.FC = () => {
 
       {/* Job Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {jobs.map((job) => (
+        {jobs.map((job: any) => (
           <div
             key={job.id}
             className="group bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between"
@@ -58,7 +58,7 @@ const JobListings: React.FC = () => {
               <div className="flex items-start gap-2">
                 <ListChecks className="w-4 h-4 text-blue-600 mt-0.5" />
                 <ul className="text-gray-600 text-sm list-disc list-inside space-y-1">
-                  {job.requirements.map((req) => (
+                  {job.requirements.map((req: any) => (
                     <li key={req.id}>{req.text}</li>
                   ))}
                 </ul>
