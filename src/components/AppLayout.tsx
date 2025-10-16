@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import { useUser } from "../hooks/auth/useUser";
+import { useLogout } from "../hooks/auth/useLogout";
 
 const AppLayout: React.FC = () => {
+  const { isAuthenticated } = useUser();
+  const { logout } = useLogout();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   const navLinks = [
     { to: "/jobs", label: "Jobs", icon: "💼" },
     { to: "/hr", label: "HR Dashboard", icon: "👩‍💼" },
     { to: "/admin", label: "Admin Panel", icon: "🛠️" },
     { to: "/report", label: "Reports", icon: "📊" },
-    { to: "/login", label: "Login", icon: "🔐" },
   ];
 
   return (
@@ -50,6 +57,23 @@ const AppLayout: React.FC = () => {
                 <span>{link.icon}</span> {link.label}
               </NavLink>
             ))}
+
+            {/* Conditional Login / Logout */}
+            {!isAuthenticated ? (
+              <NavLink
+                to="/login"
+                className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all"
+              >
+                🔐 Login
+              </NavLink>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all cursor-pointer hover:bg-gray-100"
+              >
+                🚪 Logout
+              </button>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -102,6 +126,27 @@ const AppLayout: React.FC = () => {
                 <span>{link.icon}</span> {link.label}
               </NavLink>
             ))}
+
+            {/* Mobile Login/Logout */}
+            {!isAuthenticated ? (
+              <NavLink
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+              >
+                🔐 Login
+              </NavLink>
+            ) : (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMobileOpen(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-all"
+              >
+                🚪 Logout
+              </button>
+            )}
           </nav>
         )}
       </header>
