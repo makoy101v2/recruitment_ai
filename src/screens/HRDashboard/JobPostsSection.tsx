@@ -5,24 +5,32 @@ import JobPostModal from "../../modals/JobPostModal";
 
 interface JobPostsSectionProps {
   jobs: any[];
-  newJob: string;
-  setNewJob: (val: string) => void;
-  handleAddJob: () => void;
+  handleAddJob: (jobData: {
+    title: string;
+    department: string;
+    summary: string;
+    requirements: string;
+    qualifications: string;
+  }) => void;
   handleDeleteJob: (id: number) => void;
 }
 
 const JobPostsSection: React.FC<JobPostsSectionProps> = ({
   jobs,
-  setNewJob,
   handleAddJob,
   handleDeleteJob,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  // When modal submits, set newJob and call handleAddJob
-  const handleModalSubmit = (title: string) => {
-    setNewJob(title);
-    handleAddJob();
+  // When modal submits, call handleAddJob with jobData
+  const handleModalSubmit = (jobData: {
+    title: string;
+    department: string;
+    summary: string;
+    requirements: string;
+    qualifications: string;
+  }) => {
+    handleAddJob(jobData);
   };
 
   return (

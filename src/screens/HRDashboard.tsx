@@ -18,16 +18,18 @@ const TABS = [
 const HRDashboard: React.FC = () => {
   const [tab, setTab] = useState("jobs");
   const [jobs, setJobs] = useState(mockJobs);
-  const [newJob, setNewJob] = useState("");
-
-  const handleAddJob = () => {
-    if (!newJob.trim()) return;
+  const handleAddJob = (jobData: {
+    title: string;
+    department: string;
+    summary: string;
+    requirements: string[];
+    qualifications: string[];
+  }) => {
     const newJobObj = {
       id: Date.now(),
-      title: newJob.trim(),
+      ...jobData,
     };
     setJobs([...jobs, newJobObj]);
-    setNewJob("");
   };
 
   const handleDeleteJob = (id: number) => {
@@ -69,8 +71,6 @@ const HRDashboard: React.FC = () => {
       {tab === "jobs" && (
         <JobPostsSection
           jobs={jobs}
-          newJob={newJob}
-          setNewJob={setNewJob}
           handleAddJob={handleAddJob}
           handleDeleteJob={handleDeleteJob}
         />
