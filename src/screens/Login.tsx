@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLogin } from "../hooks/auth/userAuth";
-
 import { z, ZodError } from "zod";
+import { Lock, Mail, UserPlus } from "lucide-react"; // ✅ added icons for better visuals
 
 const loginSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -41,35 +41,60 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-md border border-gray-200 p-8 flex flex-col gap-6">
-        <h2 className="text-2xl font-semibold text-center mb-2 text-gray-800">
-          {isRegister ? "Register" : "Login"}
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col gap-6 relative overflow-hidden">
+        {/* Decorative Gradient Accent */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-blue-400 rounded-t-2xl"></div>
 
-        <form className="flex flex-col gap-4" onSubmit={handlelogin}>
-          <input
-            type="text"
-            placeholder="Email"
-            required
-            className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={isPending}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            required
-            className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isPending}
-          />
+        {/* Header Section */}
+        <div className="text-center mt-2">
+          <div className="flex justify-center mb-2">
+            <div className="bg-blue-600 text-white rounded-full p-3 shadow-md">
+              {isRegister ? <UserPlus size={26} /> : <Lock size={26} />}
+            </div>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {isRegister ? "Create an Account" : "Welcome Back"}
+          </h2>
+          <p className="text-sm text-gray-500">
+            {isRegister
+              ? "Join the CSC Recruitment Portal"
+              : "Login to your account to continue"}
+          </p>
+        </div>
+
+        {/* Form */}
+        <form className="flex flex-col gap-4 mt-4" onSubmit={handlelogin}>
+          <div className="relative">
+            <Mail className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Email Address"
+              required
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={isPending}
+            />
+          </div>
+
+          <div className="relative">
+            <Lock className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isPending}
+            />
+          </div>
+
           {isRegister && (
             <select
               required
-              className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition"
             >
               <option value="">Select Role</option>
               <option value="applicant">Applicant</option>
@@ -77,23 +102,32 @@ const Login: React.FC = () => {
               <option value="admin">Admin</option>
             </select>
           )}
+
           <button
             type="submit"
-            className="bg-blue-600 text-white rounded px-4 py-2 font-medium hover:bg-blue-700 transition cursor-pointer"
             disabled={isPending}
+            className={`mt-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg px-4 py-2 font-semibold shadow hover:from-blue-700 hover:to-blue-600 transition duration-300 ${
+              isPending ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
             {isRegister ? "Register" : "Login"}
           </button>
         </form>
 
+        {/* Switch Link */}
         <button
           onClick={() => setIsRegister(!isRegister)}
-          className="text-blue-600 hover:underline mt-2 text-sm text-center"
+          className="text-blue-600 hover:underline mt-2 text-sm text-center transition"
         >
           {isRegister
             ? "Already have an account? Login"
-            : "Don't have an account? Register"}
+            : "Don’t have an account? Register"}
         </button>
+
+        {/* Footer Note */}
+        <p className="text-xs text-center text-gray-400 mt-4">
+          Civil Service Commission © {new Date().getFullYear()}
+        </p>
       </div>
     </div>
   );
